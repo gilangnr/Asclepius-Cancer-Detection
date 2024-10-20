@@ -5,7 +5,9 @@ import android.media.Image
 import android.net.Uri
 
 
-class ImageClassifierHelper() {
+class ImageClassifierHelper(
+
+) {
 
     private fun setupImageClassifier() {
         // TODO: Menyiapkan Image Classifier untuk memproses gambar.
