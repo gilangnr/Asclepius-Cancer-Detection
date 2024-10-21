@@ -54,8 +54,8 @@ class AnalyzeFragment : Fragment() {
             currentImageUri = uri
             showImage()
         } else {
-            Log.d("Photo Picker", "No media selected")
-            showToast("No media selected")
+            Log.d("Photo Picker", getString(R.string.no_media_selected))
+            showToast(getString(R.string.no_media_selected))
         }
     }
 
@@ -83,7 +83,7 @@ class AnalyzeFragment : Fragment() {
                         }
                         resultText?.let {
                             moveToResult(uri, it, inferenceTime)
-                        } ?: showToast("Tidak ada hasil yang ditemukan")
+                        } ?: showToast(getString(R.string.tidak_ada_hasil_yang_ditemukan))
                     }
                 }
             )
@@ -91,7 +91,7 @@ class AnalyzeFragment : Fragment() {
             // Klasifikasi gambar
             imageClassifierHelper.classifyStaticImage(uri)
         } ?: run {
-            showToast("Pilih gambar terlebih dahulu")
+            showToast(getString(R.string.pilih_gambar_terlebih_dahulu))
         }
     }
 

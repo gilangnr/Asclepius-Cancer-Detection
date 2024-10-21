@@ -29,7 +29,7 @@ class ResultActivity : AppCompatActivity() {
         }
 
         inferenceTime.let {
-            binding.inference.text = "inference time : $it ms"
+            binding.inference.text = getString(R.string.inference_time_ms, it)
         }
     }
 

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:gravity="center"
-        android:text="Image Analysis"
+        android:text="@string/image_analysis"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"

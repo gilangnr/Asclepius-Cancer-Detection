@@ -20,7 +20,7 @@
             android:layout_height="100dp"
             android:layout_alignParentStart="true"
             android:scaleType="centerCrop"
-            android:contentDescription="News Image"
+            android:contentDescription="@string/news_image"
             android:src="@drawable/ic_launcher_background" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_toEndOf="@id/iv_news_image"
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
-            android:text="News Title"
+            android:text="@string/news_title"
             android:textColor="#000"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -45,7 +45,7 @@
             android:layout_toEndOf="@id/iv_news_image"
             android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
-            android:text="News description goes here..."
+            android:text="@string/description"
             android:textColor="#666"
             android:textSize="14sp"
             android:maxLines="3"
@@ -58,7 +58,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@id/tv_news_description"
             android:layout_marginTop="4dp"
-            android:text="Published Date"
+            android:text="@string/published_date"
             android:textColor="#888"
             android:textSize="12sp" />
     </RelativeLayout>

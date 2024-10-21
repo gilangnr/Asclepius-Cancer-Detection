@@ -8,4 +8,15 @@
     <string name="image_classifier_failed">Image classifier failed to initialize. See error logs for details</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_media_selected">No media selected</string>
+    <string name="tidak_ada_hasil_yang_ditemukan">Tidak ada hasil yang ditemukan</string>
+    <string name="pilih_gambar_terlebih_dahulu">Pilih gambar terlebih dahulu</string>
+    <string name="inference_time_ms">inference time : %1$s ms</string>
+    <string name="analysis_results">ANALYSIS RESULTS</string>
+    <string name="image_analysis">Image Analysis</string>
+    <string name="latest_news">Latest News</string>
+    <string name="news_image">News Image</string>
+    <string name="news_title">News Title</string>
+    <string name="description">News description goes here...</string>
+    <string name="published_date">Published Date</string>
 </resources>
