@@ -19,4 +19,8 @@
     <string name="news_title">News Title</string>
     <string name="description">News description goes here...</string>
     <string name="published_date">Published Date</string>
+    <string name="save">Save Result</string>
+    <string name="history">Your History</string>
+    <string name="cancer_result">Cancer Result</string>
+    <string name="history_image">history_image</string>
 </resources>

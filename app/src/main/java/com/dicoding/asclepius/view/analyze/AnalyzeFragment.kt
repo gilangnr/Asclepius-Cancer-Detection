@@ -82,7 +82,7 @@ class AnalyzeFragment : Fragment() {
                             }
                         }
                         resultText?.let {
-                            moveToResult(uri, it, inferenceTime)
+                            moveToResult(uri, it)
                         } ?: showToast(getString(R.string.tidak_ada_hasil_yang_ditemukan))
                     }
                 }
@@ -99,11 +99,10 @@ class AnalyzeFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun moveToResult(imageUri: Uri, resultText: String, inferenceTime: Long) {
+    private fun moveToResult(imageUri: Uri, resultText: String) {
         val intent = Intent(requireContext(), ResultActivity::class.java).apply {
             putExtra("IMAGE_URI", imageUri)
             putExtra("RESULT_TEXT", resultText)
-            putExtra("INFERENCE", inferenceTime)
         }
         startActivity(intent)
     }
