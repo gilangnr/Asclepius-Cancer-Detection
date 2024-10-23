@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.FragmentAnalyzeBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
@@ -25,7 +26,9 @@ class AnalyzeFragment : Fragment() {
 
     private var _binding : FragmentAnalyzeBinding? = null
     private val binding get() = _binding!!
-    private var currentImageUri: Uri? = null
+//    private var currentImageUri: Uri? = null
+
+    private val viewModel: AnalyzeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +39,8 @@ class AnalyzeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        showImage()
 
         binding.galleryButton.setOnClickListener {
             startGallery()
@@ -53,7 +58,7 @@ class AnalyzeFragment : Fragment() {
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
         if (uri != null) {
-            currentImageUri = uri
+            viewModel.currentImageUri = uri
             startCrop(uri)
         } else {
             Log.d("Photo Picker", getString(R.string.no_media_selected))
@@ -62,14 +67,14 @@ class AnalyzeFragment : Fragment() {
     }
 
     private fun showImage() {
-        currentImageUri?.let {
+        viewModel.currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")
             binding.previewImageView.setImageURI(it)
         }
     }
 
     private fun analyzeImage() {
-        currentImageUri?.let { uri ->
+        viewModel.currentImageUri?.let { uri ->
             val imageClassifierHelper = ImageClassifierHelper(
                 context = requireContext(),
                 classifierListener = object : ImageClassifierHelper.ClassifierListener {
@@ -116,7 +121,7 @@ class AnalyzeFragment : Fragment() {
             val data = result.data
             val resultUri = data?.let { UCrop.getOutput(it) }
             if (resultUri != null) {
-                currentImageUri = resultUri
+                viewModel.currentImageUri = resultUri
                 showImage()
             } else {
                 showToast(getString(R.string.error_no_image_returned_after_cropping))
