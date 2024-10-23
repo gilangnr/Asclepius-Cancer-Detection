@@ -1,5 +1,6 @@
 package com.dicoding.asclepius.view.analyze
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
@@ -121,8 +122,14 @@ class AnalyzeFragment : Fragment() {
                 showToast(getString(R.string.error_no_image_returned_after_cropping))
             }
         } else {
-            val cropError = UCrop.getError(result.data!!)
-            showToast("Crop failed: ${cropError?.message}")
+            if (result.resultCode == Activity.RESULT_CANCELED) {
+                Log.d("uCrop", "Crop cancelled by user")
+            } else {
+                val cropError = UCrop.getError(result.data!!)
+                cropError?.let {
+                    showToast("Crop failed: ${it.message}")
+                }
+            }
         }
     }
 
