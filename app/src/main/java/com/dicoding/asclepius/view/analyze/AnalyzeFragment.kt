@@ -44,25 +44,6 @@ class AnalyzeFragment : Fragment() {
         }
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            val resultUri = UCrop.getOutput(data!!)
-            if (resultUri != null) {
-                currentImageUri = resultUri
-                showImage()
-            }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = UCrop.getError(data!!)
-            cropError?.let {
-                Log.e("uCrop Error", "Crop error: ${it.message}")
-                showToast("Crop failed: ${it.message}")
-            }
-        }
-    }
-
     private fun startGallery() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
@@ -127,15 +108,34 @@ class AnalyzeFragment : Fragment() {
         startActivity(intent)
     }
 
+    private val cropActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data = result.data
+            val resultUri = data?.let { UCrop.getOutput(it) }
+            if (resultUri != null) {
+                currentImageUri = resultUri
+                showImage()
+            } else {
+                showToast(getString(R.string.error_no_image_returned_after_cropping))
+            }
+        } else {
+            val cropError = UCrop.getError(result.data!!)
+            showToast("Crop failed: ${cropError?.message}")
+        }
+    }
+
     private fun startCrop(uri: Uri) {
         val destinationUri = Uri.fromFile(File(requireContext().cacheDir, "cropped_${System.currentTimeMillis()}.jpg"))
         val uCrop = UCrop.of(uri, destinationUri)
-
         uCrop.withAspectRatio(1f, 1f)
         uCrop.withMaxResultSize(1000, 1000)
 
-        uCrop.start(requireContext(), this)
+        val intent = uCrop.getIntent(requireContext())
+        cropActivityResultLauncher.launch(intent)
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

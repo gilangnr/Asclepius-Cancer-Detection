@@ -23,4 +23,5 @@
     <string name="history">Your History</string>
     <string name="cancer_result">Cancer Result</string>
     <string name="history_image">history_image</string>
+    <string name="error_no_image_returned_after_cropping">Error: No image returned after cropping</string>
 </resources>
