@@ -18,6 +18,10 @@
             android:name=".view.ResultActivity"
             android:exported="false" />
         <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
             android:name=".view.MainActivity"
             android:exported="true" >
             <intent-filter>

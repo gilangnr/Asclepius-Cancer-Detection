@@ -1,5 +1,6 @@
 package com.dicoding.asclepius.view.analyze
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +16,9 @@ import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.FragmentAnalyzeBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
 import com.dicoding.asclepius.view.ResultActivity
+import com.yalantis.ucrop.UCrop
 import org.tensorflow.lite.task.vision.classifier.Classifications
+import java.io.File
 
 class AnalyzeFragment : Fragment() {
 
@@ -42,6 +45,23 @@ class AnalyzeFragment : Fragment() {
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            val resultUri = UCrop.getOutput(data!!)
+            if (resultUri != null) {
+                currentImageUri = resultUri
+                showImage()
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(data!!)
+            cropError?.let {
+                Log.e("uCrop Error", "Crop error: ${it.message}")
+                showToast("Crop failed: ${it.message}")
+            }
+        }
+    }
 
     private fun startGallery() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -52,7 +72,7 @@ class AnalyzeFragment : Fragment() {
     ) { uri: Uri? ->
         if (uri != null) {
             currentImageUri = uri
-            showImage()
+            startCrop(uri)
         } else {
             Log.d("Photo Picker", getString(R.string.no_media_selected))
             showToast(getString(R.string.no_media_selected))
@@ -105,6 +125,16 @@ class AnalyzeFragment : Fragment() {
             putExtra("RESULT_TEXT", resultText)
         }
         startActivity(intent)
+    }
+
+    private fun startCrop(uri: Uri) {
+        val destinationUri = Uri.fromFile(File(requireContext().cacheDir, "cropped_${System.currentTimeMillis()}.jpg"))
+        val uCrop = UCrop.of(uri, destinationUri)
+
+        uCrop.withAspectRatio(1f, 1f)
+        uCrop.withMaxResultSize(1000, 1000)
+
+        uCrop.start(requireContext(), this)
     }
 
     override fun onDestroy() {
